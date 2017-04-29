@@ -11,7 +11,7 @@ The repository currently contains notes on following topics.
  * Bayesian Modelling (from POL280 in Spring 2017 at UC Davis. Thanks to Christopher Hare!) *Work still in progress*
  * Machine Learning (from STA208 in Spring 2017 at UC Davis. Thanks to James Sharpnack!) *Work still in progress*
 
-## 5. Repository Structure
+## 3. Repository Structure
 
  * *data*: data used in examples of notes
  * *notebooks*: Jupyter notebook files for method notes
