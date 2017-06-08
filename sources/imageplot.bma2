@@ -1,6 +1,6 @@
 imageplot.bma2 <-
 function (bma.out, color = c("red", "blue", "#FFFFD5"), order = c("input",
-    "probne0", "mds"), ...)
+    "probne0", "mds"), mar.set = "default", ...)
 {
     clr <- color
     if (length(color) == 1) {
@@ -9,7 +9,11 @@ function (bma.out, color = c("red", "blue", "#FFFFD5"), order = c("input",
         if (color == "blackandwhite")
             clr <- c("black", "black", "white")
     }
-    keep.mar <- par(mar = c(5, 10, 4, 2) + 0.1)
+    if (mar.set == "default"){
+        keep.mar <- par(mar = c(5, 8, 4, 2) + 0.1)
+    } else {
+        keep.mar <- par(mar = c(mar.set[1], mar.set[2], mar.set[3], mar.set[4]) + 0.1)
+    }
     nmodel <- nrow(bma.out$which)
     which <- bma.out$which
     probne0 <- bma.out$probne0
@@ -63,7 +67,7 @@ function (bma.out, color = c("red", "blue", "#FFFFD5"), order = c("input",
     color.matrix <- (which) * (2 - (mle > 0)) + 3 * (!which)
     par(las = 1)
     image(c(0, cumsum(postprob)), 1:nvar, color.matrix, col = clr,
-        xlab = "Model Number (Weighted by Probability)", ylab = "", xaxt = "n", yaxt = "n", 
+        xlab = "Model Number (Weighted by Probability)", ylab = "", xaxt = "n", yaxt = "n",
         xlim = c(0, 1), main = "Models selected by BMA", ...)
     xat <- (cumsum(postprob) + c(0, cumsum(postprob[-nmodel])))/2
     axis(1, at = xat, labels = 1:nmodel, ...)
