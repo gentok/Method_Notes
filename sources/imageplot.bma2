@@ -63,7 +63,7 @@ function (bma.out, color = c("red", "blue", "#FFFFD5"), order = c("input",
     color.matrix <- (which) * (2 - (mle > 0)) + 3 * (!which)
     par(las = 1)
     image(c(0, cumsum(postprob)), 1:nvar, color.matrix, col = clr,
-        xlab = "Model Number (Weighte by Probability)", ylab = "", xaxt = "n", yaxt = "n", 
+        xlab = "Model Number (Weighted by Probability)", ylab = "", xaxt = "n", yaxt = "n", 
         xlim = c(0, 1), main = "Models selected by BMA", ...)
     xat <- (cumsum(postprob) + c(0, cumsum(postprob[-nmodel])))/2
     axis(1, at = xat, labels = 1:nmodel, ...)
