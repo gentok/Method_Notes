@@ -5,9 +5,20 @@
 ## Modified from the code in:
 ## http://www.surefoss.org/dataanalysis/plotting-odds-ratios-aka-a-forrestplot-with-ggplot2/
 
-plot_odds<-function(x, title = NULL, orderval="original"){
-tmp<-data.frame(cbind(exp(coef(x)), exp(confint(x))))
+## Need to import gktheme
+
+plot_odds<-function(x, title = NULL, orderval="original", intercept=TRUE, direct=FALSE){
+
+if (direct){
+  tmp <- exp(x)
+} else {
+  tmp<-data.frame(cbind(exp(coef(x)), exp(confint(x))))
+}
+
 odds<-tmp[-1,]
+if (intercept) {
+  odds <- tmp
+}
 names(odds)<-c('OR', 'lower', 'upper')
 odds$vars<-row.names(odds)
 ticks<-c(seq(.1, 1, by =.1), seq(0, 10, by =1), seq(10, 100, by =10))
