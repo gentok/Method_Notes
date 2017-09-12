@@ -63,21 +63,22 @@ if (orderval=="asis"){
 } else if (orderval=="coeforder") {
   plotstart = ggplot(coefs, aes(y= CF, x = reorder(vars, CF) ))
 } else if (orderval=="original") {
-  plotstart = ggplot(coefs, aes(y= OR, x = reorder(vars, (length(vars)+1) - seq(1,length(vars),1)) ))
+  plotstart = ggplot(coefs, aes(y= CF, x = reorder(vars, (length(vars)+1) - seq(1,length(vars),1)) ))
 }
 
 ## Intermediate Plot
-plotmid <- plotstart + geom_point() +
+plotmid <- plotstart + geom_point(size=3) +
 geom_errorbar(aes(ymin=lower, ymax=upper), width=.2) +
-geom_hline(yintercept = 1, linetype=2) +
 coord_flip() + gktheme
 
 ## Final Plot
 if (odds){
   plotfin <- plotmid + scale_y_log10(breaks=ticks, labels = ticks) +
+  geom_hline(yintercept = 1, linetype=2) +
   labs(title = title, x = 'Variables', y = 'Odds Ratio')
 } else {
-  plotfin <- plotmid + labs(title = title, x = 'Variables', y = 'Coefficient')
+  plotfin <- plotmid + geom_hline(yintercept = 0, linetype=2) +
+  labs(title = title, x = 'Variables', y = 'Coefficient')
 }
 
 ## Return the Plot
