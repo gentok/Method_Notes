@@ -1,6 +1,6 @@
-#####################
-## Plot Odds Ratio ##
-#####################
+#######################
+## Plot Coefficients ##
+#######################
 
 ## Modified from the code in:
 ## http://www.surefoss.org/dataanalysis/plotting-odds-ratios-aka-a-forrestplot-with-ggplot2/
@@ -19,7 +19,8 @@ gktheme <-
         legend.position = c(0.75,0.68),
         legend.key.width = unit(1.5, "cm"))
 
-plot_coef<-function(x, title = NULL, orderval="original", intercept=TRUE, direct=FALSE, odds=FALSE){
+plot_coef<-function(x, title = NULL, orderval="original", intercept=TRUE, direct=FALSE, odds=FALSE,
+                    custom.variable.names = NULL){
 #' @param title plot title (string)
 #' @param orderval Order of Coefficients in the plot. "original" (default), "coeforder" or "asis"
 #' @param intercept Boulean. If TRUE (default), intercept included in the plot.
@@ -41,21 +42,25 @@ if (direct){
     tmp<-data.frame(cbind(coef(x), confint(x)))
   }
 }
+coefs <- tmp
+names(coefs)<-c('CF', 'lower', 'upper')
+
+## 
+if (is.null(custom.variable.names)==TRUE) {
+  coefs$vars <- row.names(coefs)  
+  } else {
+  coefs$vars <- c("(Intercept)", custom.variable.names)
+  }
 
 ## Include/Exclude Intercept
-if (intercept) {
-  coefs <- tmp
-} else {
-  coefs<-tmp[-1,]
+if (!intercept) {
+  coefs<-coefs[-1,]
 }
 
-names(coefs)<-c('CF', 'lower', 'upper')
-coefs$vars<-row.names(coefs)
-
+## Odds Ratio or Not
 if (odds){
   ticks<-c(seq(.1, 1, by =.1), seq(0, 10, by =1), seq(10, 100, by =10))
 }
-
 
 ## Start Plotting
 if (orderval=="asis"){
