@@ -22,7 +22,7 @@ gktheme <-
 plot_coef<-function(x, title = NULL, orderval="original", intercept=TRUE, direct=FALSE, odds=FALSE,
                     custom.variable.names = NULL){
 #' @param title plot title (string)
-#' @param orderval Order of Coefficients in the plot. "original" (default), "coeforder" or "asis"
+#' @param order.variable Order of Coefficients in the plot. "original" (default), "coeforder" or "asis"
 #' @param intercept Boulean. If TRUE (default), intercept included in the plot.
 #' @param direct Boulean. If FALSE (default), coefficients imported from model result (where coef() and confint() is applicable.)
 #' If TRUE, coefficients imported directly from coefficients table (rows=variables, columns=(coefficient,lower CI, upper CI))
@@ -63,11 +63,11 @@ if (odds){
 }
 
 ## Start Plotting
-if (orderval=="asis"){
+if (order.variable=="asis"){
   plotstart = ggplot(coefs, aes(y= CF, x = vars ))
-} else if (orderval=="coeforder") {
+} else if (order.variable=="coeforder") {
   plotstart = ggplot(coefs, aes(y= CF, x = reorder(vars, CF) ))
-} else if (orderval=="original") {
+} else if (order.variable=="original") {
   plotstart = ggplot(coefs, aes(y= CF, x = reorder(vars, (length(vars)+1) - seq(1,length(vars),1)) ))
 }
 
