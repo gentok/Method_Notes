@@ -8,6 +8,7 @@ extract.vglm <- function (model,
                           include.nobs = TRUE,
                           beside = TRUE,
                           resp.names = NA,
+                          include.thresholds = TRUE,
                           ...) 
 {
   s <- summary(model)
@@ -57,12 +58,20 @@ extract.vglm <- function (model,
       names <- rownames(coef(s))
       resploc <- grep(paste0(":",respcol[i],"$"),names)
       names <- gsub(paste0(":",respcol[i],"$"),"",names[resploc])
+      tauloc <- grep("\\(Intercept\\):", names)
       names <- gsub("\\(Intercept\\):","",names)
-      tauloc <- which(!is.na(as.numeric(names)))
       names[tauloc] <- paste(names[tauloc],as.numeric(names[tauloc])+1,sep="|")
       co <- s@coef3[resploc, 1]
       se <- s@coef3[resploc, 2]
       pval <- s@coef3[resploc, 4]
+      if(include.thresholds==FALSE) {
+        if(length(tauloc)>=1) {
+          names <- names[-tauloc]
+          co <- co[-tauloc]
+          se <- se[-tauloc]
+          pval <- pval[-tauloc]
+        }
+      }
       if (i==1) {
         tr <- createTexreg(coef.names = names, coef = co, se = se, 
                            pvalues = pval, gof.names = gof.names, 
@@ -85,12 +94,20 @@ extract.vglm <- function (model,
   }
   else {
     names <- rownames(coef(s))
+    tauloc <- grep("\\(Intercept\\):", names)
     names <- gsub("\\(Intercept\\):","",names)
-    tauloc <- which(!is.na(as.numeric(names)))
     names[tauloc] <- paste(names[tauloc],as.numeric(names[tauloc])+1,sep="|")
     co <- s@coef3[, 1]
     se <- s@coef3[, 2]
     pval <- s@coef3[, 4]
+    if(include.thresholds==FALSE) {
+      if(length(tauloc)>=1) {
+        names <- names[-tauloc]
+        co <- co[-tauloc]
+        se <- se[-tauloc]
+        pval <- pval[-tauloc]
+      }
+    }
     tr <- createTexreg(coef.names = names, coef = co, se = se, 
                        pvalues = pval, gof.names = gof.names, gof = gof, gof.decimal = gof.decimal)
     return(tr)
