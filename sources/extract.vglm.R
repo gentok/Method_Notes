@@ -57,6 +57,9 @@ extract.vglm <- function (model,
       names <- rownames(coef(s))
       resploc <- grep(paste0(":",respcol[i],"$"),names)
       names <- gsub(paste0(":",respcol[i],"$"),"",names[resploc])
+      names <- gsub("\\(Intercept\\):","",names)
+      tauloc <- which(!is.na(as.numeric(names)))
+      names[tauloc] <- paste(names[tauloc],as.numeric(names[tauloc])+1,sep="|")
       co <- s@coef3[resploc, 1]
       se <- s@coef3[resploc, 2]
       pval <- s@coef3[resploc, 4]
@@ -82,6 +85,9 @@ extract.vglm <- function (model,
   }
   else {
     names <- rownames(coef(s))
+    names <- gsub("\\(Intercept\\):","",names)
+    tauloc <- which(!is.na(as.numeric(names)))
+    names[tauloc] <- paste(names[tauloc],as.numeric(names[tauloc])+1,sep="|")
     co <- s@coef3[, 1]
     se <- s@coef3[, 2]
     pval <- s@coef3[, 4]
