@@ -56,8 +56,10 @@ extract.vglm <- function (model,
     
     for (i in 1:(length(respcol)-1)) {
       names <- rownames(coef(s))
-      resploc <- grep(paste0(":",respcol[i],"$"),names)
-      names <- gsub(paste0(":",respcol[i],"$"),"",names[resploc])
+      resploc <- grep(paste0(":",i,"$"),names)
+      names <- gsub(paste0(":",i,"$"),"",names[resploc])
+      #resploc <- grep(paste0(":",respcol[i],"$"),names)
+      #names <- gsub(paste0(":",respcol[i],"$"),"",names[resploc])
       tauloc <- grep("\\(Intercept\\):", names)
       names <- gsub("\\(Intercept\\):","",names)
       names[tauloc] <- paste(names[tauloc],as.numeric(names[tauloc])+1,sep="|")
